@@ -7,9 +7,20 @@
 
 #include "MPU6050_lib.h"
 
+
+/******************************************************************************
+ * @fn				- MPU6050_Init
+ * @brief			- This function configure the MPU6050
+ *
+ * @param[in]		- I2C_HandleTypeDef
+ *
+ * @return			- none
+ *
+ * @note			-
+ *****************************************************************************/
+
 void MPU6050_Init(I2C_HandleTypeDef *pI2C_Handle)
 {
-
 
 	HAL_I2C_Mem_Write(pI2C_Handle, MPU6050_ADDR, MPU6050_SMPLRT_DIV, 1, (uint8_t*) 0x07, 1, HAL_MAX_DELAY);// Setting The Sample (Data) Rate
 	HAL_I2C_Mem_Write(pI2C_Handle, MPU6050_ADDR, MPU6050_PWR_MGMT_1, 1, (uint8_t*) 0x00, 1, HAL_MAX_DELAY);// Setting The Clock Source
@@ -17,12 +28,38 @@ void MPU6050_Init(I2C_HandleTypeDef *pI2C_Handle)
 	HAL_I2C_Mem_Write(pI2C_Handle, MPU6050_ADDR, MPU6050_GYRO_CONFIG, 1, (uint8_t*) 0x18, 1, HAL_MAX_DELAY);// Configure The GYRO (FSR= +-2000d/s)
 	HAL_I2C_Mem_Write(pI2C_Handle, MPU6050_ADDR, MPU6050_INT_ENABLE, 1, (uint8_t*) 0x01, 1, HAL_MAX_DELAY);// Enable Data Ready Interrupts
 
-
 }
+
+
+/******************************************************************************
+ * @fn				- MPU6050_Set_DLPF
+ * @brief			- This function configure the MPU6050 internal low pass filter
+ *
+ * @param[in]		- I2C_HandleTypeDef
+ * @param[in]		- MPU6050_DLPF_macro
+ *
+ * @return			- none
+ *
+ * @note			-
+ *****************************************************************************/
+
 void MPU6050_Set_DLPF(I2C_HandleTypeDef *pI2C_Handle,uint8_t MPU6050_DLPF_macro)
 {
 	HAL_I2C_Mem_Write(pI2C_Handle, MPU6050_ADDR, MPU6050_CONFIG, 1, &MPU6050_DLPF_macro, 1, HAL_MAX_DELAY);
 }
+
+/******************************************************************************
+ * @fn				- MPU6050_Read
+ * @brief			- This function read the MPU6050 data (Accelerometer & Gyroscope)
+ *
+ * @param[in]		- I2C_HandleTypeDef
+ * @param[in]		- MPU6050_typeDef variable
+ *
+ * @return			- none
+ *
+ * @note			-
+ *****************************************************************************/
+
 void MPU6050_Read(I2C_HandleTypeDef *pI2C_Handle, MPU6050_typeDef *pDataStruct)
 {
 	uint8_t mpu_data[12];
